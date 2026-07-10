@@ -1,218 +1,179 @@
 ---
-# This title is used for the browser tab and the link-preview card (see the
-# "description" and "thumbnail" keys below). The title displayed at the top of
-# the page is set separately, on the <Header> component in the body.
-title: Academic Project Page Template
-
-# The color theme of the page. Defaults to "device" (the preference set in the user's brower or operating system). Setting this to "light" or "dark" will override the user's preference. This is useful if your figures only look good in one theme.
-theme: device
-
-# This is the icon that appears in the user's browser tab. To customize, change the favicon.svg file in /public/, or add your own file to /public/ and change the filename here.
+title: "SketchBloom: Training-Free Vector Sketch Outpainting with Stroke-Level Style Control"
+theme: light
 favicon: favicon.svg
-
-# These keys are optional. If a link to your project page is in a Google search result, text message, or social media post, it will often appear as a "link preview card" based on its title, description, favicon, and thumbnail. After you publish your page, you can double check that these previews look right using [this tool](https://linkpreview.xyz/)
-description: Simple project page template for your research paper, built with Astro and Tailwind
-thumbnail: screenshot-light.png
+description: "SketchBloom is a training-free framework for text-guided vector sketch outpainting with stroke-level style control and editable SVG output."
+thumbnail: thumbnail.png
 ---
 
 import Header from "./components/Header.astro";
-import Video from "./components/Video.astro";
 import HighlightedSection from "./components/HighlightedSection.astro";
-import SmallCaps from "./components/SmallCaps.astro";
 import Figure from "./components/Figure.astro";
 import Picture from "./components/Picture.astro";
-import ModelViewer from "./components/ModelViewer.astro"
-import TwoColumns from "./components/TwoColumns.astro";
-import YouTubeVideo from "./components/YouTubeVideo.astro";
-import Carousel from "./components/Carousel.astro";
-import CarouselSlide from "./components/CarouselSlide.astro";
 import Wide from "./components/Wide.astro";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/starwind/tabs";
-import { Comparison } from "./components/Comparison.tsx";
 
-import outside from "./assets/outside.mp4";
-import dogsDiffc from "./assets/dogs-diffc.png"
-import dogsTrue from "./assets/dogs-true.png"
-import dogsMsillm from "@/assets/dogs-msillm.jpg"
+import teaser from "./assets/sketchbloom/teaser.png";
+import methodOverview from "./assets/sketchbloom/method_overview.jpg";
+import gallery1 from "./assets/sketchbloom/gallery_1.png";
+import comparison from "./assets/sketchbloom/comparison.png";
+import ablation from "./assets/sketchbloom/ablation.png";
+
+import paperPdf from "./assets/sketchbloom/paper.pdf";
+import supplementaryPdf from "./assets/sketchbloom/supplementary.pdf";
 
 <Header
-  title="Academic Project Page Template"
-  conference="Conference Name"
+  title="SketchBloom: Training-Free Vector Sketch Outpainting with Stroke-Level Style Control"
+  conference="SIGGRAPH Asia 2026"
   authors={[
     {
-      name: "Roman Hauksson",
-      url: "https://roman.technology",
-      institution: "University of Texas at Dallas",
-      notes: ["*", "†"],
+      name: "Anonymous Author(s)",
+      institution: "Submission ID: 1591",
     },
-    { name: "Author Two", institution: "Institution Two", notes: ["*", "†"] },
-    { name: "Author Three", institution: "Institution Three", notes: ["*"] },
-    { name: "Author Four", institution: "Institution Four" },
   ]}
-  notes={[
-    { symbol: "*", text: "author note one" },
-    { symbol: "†", text: "author note two" },
-  ]}
+  notes={[]}
   links={[
-    { name: "Paper", url: "https://github.com/RomanHauksson/academic-project-astro-template", icon: "ri:file-pdf-2-line" },
-    { name: "Code", url: "https://github.com/RomanHauksson/academic-project-astro-template", icon: "ri:github-line" },
-    { name: "arXiv", url: "https://github.com/RomanHauksson/academic-project-astro-template", icon: "academicons:arxiv" },
-    { name: "Slides", url: "https://github.com/RomanHauksson/academic-project-astro-template", icon: "ri:slideshow-2-line" },
+    { name: "Paper", url: paperPdf, icon: "ri:file-pdf-2-line" },
+    { name: "Supplementary", url: supplementaryPdf, icon: "ri:file-list-3-line" },
+    { name: "BibTeX", url: "#citation", icon: "ri:double-quotes-l" },
   ]}
->
-  {/*
-    Optionally place a cover image or video behind the header. Import the
-    asset (from src/assets/, so images are optimized) and pass it through the
-    "background" slot using the Picture or Video component:
+/>
 
-      <Picture slot="background" src={cover} alt="" />
-      <Video slot="background" src={outside} controls={false} />
-  */}
-  <Picture slot="background" src={dogsTrue} alt="" priority />
-</Header>
+<Wide>
+  <Figure>
+    <Picture
+      slot="figure"
+      src={teaser}
+      alt="A grid showing SketchBloom style-guided sketch outpainting results across multiple reference styles."
+      priority
+    />
+    <Fragment slot="caption">
+      **Style-guided vector sketch outpainting with SketchBloom.**
+      Given an input sketch, a text prompt, and a reference style image,
+      SketchBloom extends the sketch boundary while transferring the reference's
+      stroke vocabulary and producing editable SVG output.
+    </Fragment>
+  </Figure>
+</Wide>
 
 <HighlightedSection>
 
 ## Abstract
 
-This is a template you can use to create a professional-looking, accessible, and performant project page for your research paper. [See the code for the template and instructions on how to use it yourself on GitHub](https://github.com/RomanHauksson/academic-project-astro-template). It's made with the [Astro web framework](https://astro.build/) and styled with [Tailwind](https://tailwindcss.com/). You write the content in [MDX](https://mdxjs.com/), which enables markdown formatting like **bold**, _italics_, and ~strikethrough~, as well as custom components like <SmallCaps>small caps.</SmallCaps>
+SketchBloom is a training-free framework for text-guided vector sketch outpainting with stroke-level style control. Given a sparse input sketch, a text prompt, and an optional reference style image, SketchBloom extends the sketch beyond its original boundary while preserving the sketch domain.
+
+The method transfers the reference style's stroke width, color, and texture distribution through adaptive latent blending. It then converts the result into a resolution-independent SVG composed of optimized Bézier strokes. By separating structural contour strokes from free-form texture strokes and compositing them with multiply blending, SketchBloom produces editable vector outputs that preserve both scene structure and stylistic identity.
 
 </HighlightedSection>
 
-## Visuals
+## What SketchBloom Does
 
-### Image
+SketchBloom addresses a gap between raster diffusion outpainting and editable vector graphics. Existing raster outpainting methods can extend images, but they usually output fixed pixels. Existing vector sketch methods often generate from scratch rather than extend an existing sketch.
 
-Use the `Picture` component to display images. If you have a figure in PDF format, you can pass in its path as the `src` prop and it will be converted into a web-friendly image automatically.
+SketchBloom combines three capabilities in one training-free pipeline:
 
-<Picture src={dogsDiffc} alt="Photo of two running dogs, lossily compressed using the DiffC algorithm" />
+- **Sketch outpainting:** extends a sparse input sketch using a text prompt.
+- **Reference-guided style control:** transfers stroke-level visual identity from a reference image.
+- **Editable SVG generation:** produces scalable Bézier strokes instead of fixed raster pixels.
 
-### Video
-
-<Video src={outside} />
-
-### Wide visual
-
-I constrained the maximum width of the text column to make sure it's readable even when the screen is wide. But images and other visuals should "break out" and take up more horizontal space: for this, try wrapping them in the `Wide` component.
+## Method Overview
 
 <Wide>
-  <Picture src={dogsDiffc} alt="Photo of two running dogs, lossily compressed using the DiffC algorithm" />
+  <Figure>
+    <Picture
+      slot="figure"
+      src={methodOverview}
+      alt="Overview of the SketchBloom pipeline from input sketch and text prompt to raster preprocessing, vector stroke generation, and final SVG fusion."
+    />
+    <Fragment slot="caption">
+      **Overview of SketchBloom.**
+      The pipeline first produces a stylized raster target, then initializes and optimizes Bézier strokes, and finally fuses structure and texture stroke layers into an editable SVG.
+    </Fragment>
+  </Figure>
 </Wide>
 
-### Figure with caption
+### Stage 1: Raster preprocessing and adaptive latent blending
 
-Wrap a visual in a `Figure` component to add a caption.
+SketchBloom first uses a ControlNet-conditioned diffusion model to semantically extend the input sketch into a full-content raster image. It then extracts contours and applies reference-guided style transfer through DDIM inversion, AdaIN initialization, and adaptive latent blending.
 
-<Figure>
-  <Picture slot="figure" src={dogsDiffc} alt="Photo of two running dogs, lossily compressed using the DiffC algorithm" />
-  <Fragment slot="caption">A photo of two dogs running side-by-side in shallow water, lossily compressed using the [DiffC algorithm](https://jeremyiv.github.io/diffc-project-page/).</Fragment>
-</Figure>
+This stage produces a stylized raster target that guides the later vector optimization stage.
 
-### Comparison slider
+### Stage 2: Differentiable stroke initialization and optimization
 
-Use the `Comparison` component to compare two visuals with an interactive slider.
+SketchBloom initializes Bézier strokes through a hybrid tiling strategy. Contour-guided placement preserves important structural lines, while attention-guided sampling improves coverage in semantically important regions.
 
-<Comparison client:idle >
-  <Picture slot="itemOne" src={dogsDiffc} alt="Photo of two running dogs, lossily compressed using the DiffC algorithm" />
-  <Picture slot="itemTwo" src={dogsTrue} alt="True photo of two dogs running side-by-side in shallow water" />
-</Comparison>
+The system then optimizes two stroke sets separately:
 
-### Tab panels
+- **Structure strokes:** preserve dark contour geometry.
+- **Texture strokes:** capture shading, hatching, and loose stylistic detail.
 
-Tab panels are a great way to display a labeled collection of related visuals without taking up too much space.
+### Stage 3: Layer-wise vector fusion
 
-<Tabs defaultValue="true">
-  <TabsList>
-    <TabsTrigger value="true">Ground truth</TabsTrigger>
-    <TabsTrigger value="diffc">DiffC (Flux-dev)</TabsTrigger>
-    <TabsTrigger value="msillm">MS-ILLM</TabsTrigger>
-  </TabsList>
-  <TabsContent value="true">
+The final SVG is produced by compositing the structure and texture stroke sets using a multiply-blend layering scheme. This preserves dominant contour lines while retaining style-specific texture and shading.
+
+## Results Gallery
+
+<Wide>
+  <Figure>
     <Picture
-      src={dogsTrue}
-      alt="True photo of two dogs running side-by-side in shallow water"
+      slot="figure"
+      src={gallery1}
+      alt="Additional SketchBloom qualitative results across different input sketches, prompts, and reference styles."
     />
-  </TabsContent>
-  <TabsContent value="diffc">
+    <Fragment slot="caption">
+      **Qualitative results.**
+      SketchBloom handles diverse subjects and scene prompts while transferring different sketch styles, including clean linework, cross-hatching, graphite shading, and loose painterly strokes.
+    </Fragment>
+  </Figure>
+</Wide>
+
+## Comparison with Baselines
+
+<Wide>
+  <Figure>
     <Picture
-      src={dogsDiffc}
-      alt="Photo of two running dogs, lossily compressed using the DiffC algorithm"
+      slot="figure"
+      src={comparison}
+      alt="Qualitative comparison between SketchBloom and baseline sketch or vector generation methods."
     />
-  </TabsContent>
-  <TabsContent value="msillm">
+    <Fragment slot="caption">
+      **Comparison with existing methods.**
+      Compared with raster-only or generation-from-scratch baselines, SketchBloom better preserves the outpainted scene structure while producing editable SVG outputs with stronger reference-style fidelity.
+    </Fragment>
+  </Figure>
+</Wide>
+
+## Ablation Study
+
+<Wide>
+  <Figure>
     <Picture
-      src={dogsMsillm}
-      alt="Photo of two running dogs, lossily compressed using MS-ILLM"
+      slot="figure"
+      src={ablation}
+      alt="Ablation study showing the effect of structure strokes, texture strokes, and layer-wise fusion."
     />
-  </TabsContent>
-</Tabs>
+    <Fragment slot="caption">
+      **Ablation on vector fusion.**
+      The structure branch preserves contour dominance, the texture branch captures stylistic detail, and the fused result combines both into a coherent SVG.
+    </Fragment>
+  </Figure>
+</Wide>
 
-### Carousel
+## SketchBloom-Bench
 
-A carousel is another useful pattern for a collection of visuals that don't necessarily have meaningful labels.
+We introduce **SketchBloom-Bench**, a benchmark for evaluating style-guided vector sketch outpainting. It contains 1,024 input-style combinations by pairing outpainted content images with diverse reference styles. The benchmark covers multiple sketch categories and reference styles ranging from minimal contour drawings to dense cross-hatching, graphite shading, and loose ink-wash styles.
 
-<Carousel>
-  <CarouselSlide>
-    <Picture src={dogsTrue} alt="True photo of two dogs running side-by-side in shallow water" />
-  </CarouselSlide>
-  <CarouselSlide>
-    <Picture src={dogsDiffc} alt="Photo of two running dogs, lossily compressed using the DiffC algorithm" />
-  </CarouselSlide>
-  <CarouselSlide>
-    <Picture
-      src={dogsMsillm}
-      alt="Photo of two running dogs, lossily compressed using MS-ILLM"
-    />
-  </CarouselSlide>
-</Carousel>
+## Responsible Use and Limitations
 
-## Two columns
+SketchBloom is intended as a creative-assistance tool for illustrators, concept artists, and designers. Since the method can transfer the visual vocabulary of a reference image, users should avoid imitating the distinctive style of living artists without permission.
 
-Use the two columns component to display two columns of content. In this example, the first column contains a YouTube video embed and the second column contains an interactive 3D model viewer. By default, they display side by side, but if the screen is narrow enough (for example, on mobile), they're arranged vertically.
-
-<TwoColumns>
-  <YouTubeVideo slot="left" videoId="wjZofJX0v4M" />
-  <ModelViewer slot="right" src="/BoxVertexColors.glb" alt="A cube colored with a rainbow gradient" />
-</TwoColumns>
-
-## $\LaTeX$
-
-You can also add $\LaTeX$ formulas, rendered during the build process using [$\KaTeX$](https://katex.org/) so they're quick to load for visitors of your project page. You can write them inline, like this: $a^2 + b^2 = c^2$. Or, you can write them as a block:
-
-$$
-\int_a^b f(x) dx
-$$
+We recommend using references from one's own work, public-domain material, appropriately licensed images, or images with explicit permission. Generated outputs should be treated as editable drafts for human refinement rather than final human-authored artwork.
 
 ## Citation
 
-If you copy your bibliography into `./bibliography.bib`, you can cite papers using their BibTeX keys, and they'll be automatically formatted and included in the bibliography section at the end. For example: [@vaswani2017attention]. Note that these citations are distinct from footnotes[^mynote], which show up in a separate section if you use them.
-
-[^mynote]: On the web, they should really be called "endnotes", since each page constitutes a full document.
-
-## Table
-
-Add simple tables using [GitHub Flavored Markdown syntax](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables):
-
-| Model | Accuracy | F1 score | Training time (hours) |
-| :--- | :---: | :---: | :---: |
-| BERT-base | 0.89 | 0.87 | 4.5 |
-| RoBERTa-large | 0.92 | 0.91 | 7.2 |
-| DistilBERT | 0.86 | 0.84 | 2.1 |
-| XLNet | 0.90 | 0.89 | 6.8 |
-
-## BibTeX citation
-
-Displaying the BibTeX entry for your paper in a code block makes it easy to copy and paste.
-
 ```bibtex
-@misc{roman2024academic,
-  author = "{Roman Hauksson}",
-  title = "Academic Project Page Template",
-  year = "2024",
-  howpublished = "\url{https://research-template.roman.technology}",
+@inproceedings{sketchbloom2026,
+  title={SketchBloom: Training-Free Vector Sketch Outpainting with Stroke-Level Style Control},
+  author={Quang-Thinh Nguyen, Duy-Khang Do, Tam V. Nguyen, Minh-Triet Tran, Trung-Nghia Le},
+  booktitle={},
+  year={2026}
 }
-```
-
-## Bibliography
-
-[^ref]
