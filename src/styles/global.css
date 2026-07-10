@@ -24,17 +24,83 @@ html {
 }
 
 :root {
-  --maximum-text-width: 50rem;
-  --minimum-inline-margin: 1.5rem;
+  /*
+   * Chiều rộng thống nhất cho toàn bộ nội dung chính:
+   * text, method figure, qualitative figure, quantitative table,
+   * ablation figure và benchmark.
+   */
+  --maximum-text-width: 68rem;
+
+  /*
+   * Khoảng cách tối thiểu giữa nội dung và cạnh màn hình.
+   * clamp giúp lề tăng nhẹ trên màn hình lớn nhưng vẫn gọn trên mobile.
+   */
+  --minimum-inline-margin: clamp(1.25rem, 3vw, 2rem);
+
   --actual-inline-margin: max(
     var(--minimum-inline-margin),
     (100cqw - var(--maximum-text-width)) / 2
   );
-  --actual-text-width: calc(100cqw - 2 * var(--actual-inline-margin));
+
+  --actual-text-width: calc(
+    100cqw - 2 * var(--actual-inline-margin)
+  );
 }
+
 
 main {
   margin-inline: var(--actual-inline-margin);
+}
+/*
+ * Khoảng cách thống nhất giữa các section.
+ */
+.paper-section {
+  width: 100%;
+  margin-block: clamp(4rem, 7vw, 7rem);
+}
+
+/*
+ * Không để phần tử đầu/cuối tạo thêm khoảng trống
+ * ngoài section.
+ */
+.paper-section > :first-child {
+  margin-top: 0;
+}
+
+.paper-section > :last-child {
+  margin-bottom: 0;
+}
+
+/*
+ * Quy tắc chung cho figure.
+ */
+.paper-figure {
+  width: 100%;
+  margin-block: clamp(2rem, 4vw, 3rem);
+}
+
+.paper-figure__media {
+  width: 100%;
+  overflow: hidden;
+}
+
+.paper-figure__media picture,
+.paper-figure__media img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.paper-figure__caption {
+  width: 100%;
+  max-width: 60rem;
+  margin: 0.9rem auto 0;
+  padding-inline: 0.5rem;
+
+  text-align: center;
+  line-height: 1.6;
+  color: var(--muted-foreground);
 }
 
 .full-bleed,

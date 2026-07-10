@@ -7,9 +7,16 @@ interface Props {
   alt: string;
   priority?: boolean;
   invertInDarkMode?: boolean;
+  class?: string;
 }
 
-const { src, alt, priority = false, invertInDarkMode = false } = Astro.props;
+const {
+  src,
+  alt,
+  priority = false,
+  invertInDarkMode = false,
+  class: className = "",
+} = Astro.props;
 
 let image: ImageMetadata;
 
@@ -18,10 +25,24 @@ if (typeof src === "string") {
 } else {
   image = src;
 }
+
+const pictureClass = [
+  "block",
+  "h-auto",
+  "w-full",
+  "max-w-full",
+  "rounded-lg",
+  "object-contain",
+  "mx-auto",
+  invertInDarkMode ? "dark:invert" : "",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
 ---
 
 <AstroPicture
-  class={`rounded-lg max-h-[calc(100svh-3rem)] max-w-full w-min mx-auto ${invertInDarkMode ? "dark:invert" : ""}`}
+  class={pictureClass}
   src={image}
   alt={alt}
   layout="constrained"
