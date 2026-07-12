@@ -1,26 +1,23 @@
 ---
 interface Props {
   id?: string;
-  tone?: "default" | "muted";
+  class?: string;
 }
 
 const {
   id,
-  tone = "default",
+  class: className = "",
 } = Astro.props;
 ---
 
 <section
   id={id}
   class:list={[
-    "paper-section scroll-mt-16",
-    tone === "muted" &&
-      "full-bleed bg-zinc-100 px-[var(--actual-inline-margin)] py-14 dark:bg-zinc-900",
+    "paper-section scroll-mt-20",
+    className,
   ]}
 >
-  <div
-    class="w-full [&>:first-child]:mt-0 [&>:last-child]:mb-0"
-  >
+  <div class="paper-section__inner">
     <slot />
   </div>
 </section>

@@ -1,13 +1,33 @@
 ---
+interface Props {
+  variant?: "default" | "hero";
+}
 
+const {
+  variant = "default",
+} = Astro.props;
+
+const hasCaption = Astro.slots.has("caption");
 ---
 
-<figure class="paper-figure">
+<figure
+  class:list={[
+    "paper-figure",
+    "not-prose",
+    variant === "hero" && "paper-figure--hero",
+  ]}
+>
   <div class="paper-figure__media">
     <slot name="figure" />
   </div>
 
-  <figcaption class="paper-figure__caption">
-    <slot name="caption" />
-  </figcaption>
+  {
+    hasCaption && (
+      <figcaption class="paper-figure__caption">
+        <div class="paper-figure__caption-inner">
+          <slot name="caption" />
+        </div>
+      </figcaption>
+    )
+  }
 </figure>

@@ -1,5 +1,4 @@
 ---
-import { Picture as AstroPicture } from "astro:assets";
 import { renderPDF } from "../lib/render-pdf";
 
 interface Props {
@@ -7,6 +6,8 @@ interface Props {
   alt: string;
   priority?: boolean;
   invertInDarkMode?: boolean;
+  maxDisplayWidth?: number;
+  scale?: number;
   class?: string;
 }
 
@@ -15,6 +16,8 @@ const {
   alt,
   priority = false,
   invertInDarkMode = false,
+  maxDisplayWidth,
+  scale = 1,
   class: className = "",
 } = Astro.props;
 
@@ -26,27 +29,38 @@ if (typeof src === "string") {
   image = src;
 }
 
-const pictureClass = [
-  "block",
-  "h-auto",
-  "w-full",
-  "max-w-full",
-  "rounded-lg",
-  "object-contain",
-  "mx-auto",
-  invertInDarkMode ? "dark:invert" : "",
-  className,
-]
-  .filter(Boolean)
-  .join(" ");
+const sourceWidth = image.width;
+
+/*
+ * Base width before scaling.
+ * If maxDisplayWidth is not provided, start from sourceWidth.
+ */
+const baseWidth =
+  typeof maxDisplayWidth === "number"
+    ? maxDisplayWidth
+    : sourceWidth;
+
+/*
+ * Final display width.
+ * scale = 1.2 means enlarge by 20%.
+ */
+const displayWidth = Math.round(baseWidth * scale);
 ---
 
-<AstroPicture
-  class={pictureClass}
-  src={image}
-  alt={alt}
-  layout="constrained"
-  formats={["avif"]}
-  priority={priority}
-  fit="contain"
-/>
+<div class="paper-image-wrapper">
+  <img
+    src={image.src}
+    alt={alt}
+    width={image.width}
+    height={image.height}
+    loading={priority ? "eager" : "lazy"}
+    fetchpriority={priority ? "high" : undefined}
+    decoding="async"
+    class:list={[
+      "paper-image",
+      invertInDarkMode && "dark:invert",
+      className,
+    ]}
+    style={`--source-width: ${displayWidth}px;`}
+  />
+</div>

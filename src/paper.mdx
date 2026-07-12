@@ -7,7 +7,6 @@ thumbnail: thumbnail.png
 ---
 
 import Header from "./components/Header.astro";
-import HighlightedSection from "./components/HighlightedSection.astro";
 import Figure from "./components/Figure.astro";
 import Picture from "./components/Picture.astro";
 import Wide from "./components/Wide.astro";
@@ -20,28 +19,45 @@ import gallery1 from "./assets/sketchbloom/gallery_1.png";
 import comparison from "./assets/sketchbloom/comparison.png";
 import ablation from "./assets/sketchbloom/ablation.png";
 
-import paperPdf from "./assets/sketchbloom/paper.pdf";
-import supplementaryPdf from "./assets/sketchbloom/supplementary.pdf";
 
 <Header
   title="SketchBloom: Training-Free Vector Sketch Outpainting with Stroke-Level Style Control"
-  conference="SIGGRAPH Asia 2026"
+  conference=""
   authors={[
     {
-      name: "Anonymous Author(s)",
-      institution: "Submission ID: 1591",
+      name: "Quang-Thinh Nguyen, Duy-Khang Do, Tam V. Nguyen, Minh-Triet Tran, Trung-Nghia Le",
+      
     },
   ]}
   notes={[]}
   links={[
-    { name: "Paper", url: paperPdf, icon: "ri:file-pdf-2-line" },
-    { name: "Supplementary", url: supplementaryPdf, icon: "ri:file-list-3-line" },
-    { name: "BibTeX", url: "#citation", icon: "ri:double-quotes-l" },
+    {
+      name: "Paper",
+      url: "sketchbloom/paper.pdf",
+      icon: "ri:file-pdf-2-line",
+      newTab: true,
+    },
+    {
+      name: "Supplementary",
+      url: "sketchbloom/supplementary.pdf",
+      icon: "ri:file-list-3-line",
+      newTab: true,
+    },
+    {
+      name: "Code (Coming Soon)",
+      icon: "ri:github-fill",
+      disabled: true,
+    },
+    {
+      name: "BibTeX",
+      url: "#citation",
+      icon: "ri:double-quotes-l",
+    },
   ]}
 />
 
 <Wide>
-  <Figure>
+  <Figure variant="hero">
     <Picture
       slot="figure"
       src={teaser}
@@ -49,24 +65,34 @@ import supplementaryPdf from "./assets/sketchbloom/supplementary.pdf";
       priority
     />
 
-    <span slot="caption">
-      <strong>
+    <div slot="caption" className="figure-caption-content">
+      <strong className="figure-caption-title">
         Style-guided vector sketch outpainting with SketchBloom.
-      </strong>{" "}
-      Given an input sketch, a text prompt, and a reference style image,
-      SketchBloom extends the scene while transferring the reference
-      stroke vocabulary and producing an editable SVG.
-    </span>
+      </strong>
+
+      <span className="figure-caption-description">
+        Given an input sketch, a text prompt, and a reference style image,
+        SketchBloom extends the scene while transferring the reference
+        stroke vocabulary and producing an editable SVG.
+      </span>
+    </div>
   </Figure>
 </Wide>
 
-<PaperSection id="abstract" tone="muted">
+<PaperSection id="abstract">
 
 ## Abstract
 
-SketchBloom is a training-free framework for text-guided vector sketch outpainting with stroke-level style control. Given a sparse input sketch, a text prompt, and an optional reference style image, SketchBloom extends the sketch beyond its original boundary while preserving the sketch domain.
+SketchBloom is a training-free framework for text-guided vector
+sketch outpainting with stroke-level style control. Given a sparse
+input sketch, a text prompt, and an optional reference style image,
+SketchBloom extends the sketch beyond its original boundary while
+preserving the sketch domain.
 
-The method transfers the reference style's stroke width, color, and texture distribution through adaptive latent blending. It then converts the result into a resolution-independent SVG composed of optimized Bézier strokes.
+The method transfers the reference style's stroke width, color, and
+texture distribution through adaptive latent blending. It then converts
+the result into a resolution-independent SVG composed of optimized
+Bézier strokes.
 
 </PaperSection>
 
@@ -77,8 +103,10 @@ The method transfers the reference style's stroke width, color, and texture dist
 SketchBloom combines three capabilities in one training-free pipeline:
 
 - **Sketch outpainting:** extends a sparse input sketch using a text prompt.
-- **Reference-guided style control:** transfers stroke-level visual identity from a reference image.
-- **Editable SVG generation:** produces scalable Bézier strokes rather than fixed raster pixels.
+- **Reference-guided style control:** transfers stroke-level visual identity
+  from a reference image.
+- **Editable SVG generation:** produces scalable Bézier strokes rather
+  than fixed raster pixels.
 
 </PaperSection>
 
@@ -93,23 +121,35 @@ SketchBloom combines three capabilities in one training-free pipeline:
     alt="Overview of the SketchBloom raster preprocessing, stroke optimization, and vector fusion pipeline."
   />
 
-  <span slot="caption">
-    <strong>Overview of SketchBloom.</strong>{" "}
-    The pipeline first produces a stylized raster target, initializes
-    and optimizes Bézier strokes, and finally fuses structure and texture
-    stroke layers into an editable SVG.
-  </span>
+  <div slot="caption" className="figure-caption-content">
+    <strong className="figure-caption-title">
+      Overview of SketchBloom.
+    </strong>
+
+    <span className="figure-caption-description">
+      The pipeline first produces a stylized raster target, initializes
+      and optimizes Bézier strokes, and finally fuses structure and texture
+      stroke layers into an editable SVG.
+    </span>
+  </div>
 </Figure>
 
 ### Stage 1: Raster preprocessing and adaptive latent blending
 
-SketchBloom first uses a ControlNet-conditioned diffusion model to semantically extend the input sketch into a full-content raster image. It then extracts contours and applies reference-guided style transfer through DDIM inversion, AdaIN initialization, and adaptive latent blending.
+SketchBloom first uses a ControlNet-conditioned diffusion model to
+semantically extend the input sketch into a full-content raster image.
+It then extracts contours and applies reference-guided style transfer
+through DDIM inversion, AdaIN initialization, and adaptive latent blending.
 
-This stage produces a stylized raster target that guides the later vector optimization stage.
+This stage produces a stylized raster target that guides the later
+vector optimization stage.
 
 ### Stage 2: Differentiable stroke initialization and optimization
 
-SketchBloom initializes Bézier strokes through a hybrid tiling strategy. Contour-guided placement preserves important structural lines, while attention-guided sampling improves coverage in semantically important regions.
+SketchBloom initializes Bézier strokes through a hybrid tiling strategy.
+Contour-guided placement preserves important structural lines, while
+attention-guided sampling improves coverage in semantically important
+regions.
 
 The system then optimizes two stroke sets separately:
 
@@ -118,7 +158,10 @@ The system then optimizes two stroke sets separately:
 
 ### Stage 3: Layer-wise vector fusion
 
-The final SVG is produced by compositing the structure and texture stroke sets using a multiply-blend layering scheme. This preserves dominant contour lines while retaining style-specific texture and shading.
+The final SVG is produced by compositing the structure and texture
+stroke sets using a multiply-blend layering scheme. This preserves
+dominant contour lines while retaining style-specific texture and shading.
+
 </PaperSection>
 
 <PaperSection id="qualitative-results">
@@ -139,11 +182,16 @@ painterly strokes.
     alt="Qualitative SketchBloom results across multiple input sketches and reference styles."
   />
 
-  <span slot="caption">
-    <strong>Cross-style qualitative results.</strong>{" "}
-    Rows show different input sketches and scene prompts, while columns
-    show outputs conditioned on different reference styles.
-  </span>
+  <div slot="caption" className="figure-caption-content">
+    <strong className="figure-caption-title">
+      Cross-style qualitative results.
+    </strong>
+
+    <span className="figure-caption-description">
+      Rows show different input sketches and scene prompts, while columns
+      show outputs conditioned on different reference styles.
+    </span>
+  </div>
 </Figure>
 
 ### Comparison with Baselines
@@ -155,16 +203,21 @@ painterly strokes.
     alt="Visual comparison between SketchBloom and existing vector sketch generation methods."
   />
 
-  <span slot="caption">
-    <strong>Comparison with existing methods.</strong>{" "}
-    SketchBloom better preserves object boundaries, perspective, and
-    scene-level structure while maintaining an editable vector representation.
-  </span>
+  <div slot="caption" className="figure-caption-content">
+    <strong className="figure-caption-title">
+      Comparison with existing methods.
+    </strong>
+
+    <span className="figure-caption-description">
+      SketchBloom better preserves object boundaries, perspective, and
+      scene-level structure while maintaining an editable vector representation.
+    </span>
+  </div>
 </Figure>
 
 </PaperSection>
 
-<PaperSection id="quantitative-results" tone="muted">
+<PaperSection id="quantitative-results">
 
 ## Quantitative Results
 
@@ -224,7 +277,7 @@ Aesthetic, DINO, and Edge F1, while lower values are better for DreamSim.
       <td>0.8325</td>
     </tr>
 
-    <tr class="font-bold">
+    <tr className="font-bold">
       <td>SketchBloom (Ours)</td>
       <td>5.2186</td>
       <td>0.5053</td>
@@ -273,60 +326,8 @@ Perceptual Quality, Content Preservation, and Structural Coherence.
 
 </PaperSection>
 
-<PaperSection id="ablation-study">
 
-## Ablation Study
-
-<Figure>
-  <Picture
-    slot="figure"
-    src={ablation}
-    alt="Ablation comparison of SketchBloom structure, texture, and fusion components."
-  />
-
-  <span slot="caption">
-    <strong>Ablation on layer-wise vector fusion.</strong>{" "}
-    The structure branch preserves contour geometry, the texture branch
-    captures tonal and stylistic detail, and the fused output balances
-    both objectives.
-  </span>
-</Figure>
-
-The texture-only variant achieves the lowest Gram distance, while the
-fusion variant achieves the strongest Aesthetic, DINO, and DreamSim
-results. This indicates that fusion provides the best overall balance
-rather than optimizing style distance alone.
-
-</PaperSection>
-
-<PaperSection id="benchmark" tone="muted">
-
-## SketchBloom-Bench
-
-SketchBloom-Bench contains 1,024 input-style combinations generated
-from 64 outpainted content images across 47 sketch inputs and 16
-reference styles.
-
-The benchmark covers multiple object categories, scene complexities,
-and rendering regimes, ranging from minimal contour drawings to dense
-cross-hatching, graphite shading, and loose ink-wash styles.
-
-</PaperSection>
-
-<PaperSection id="responsible-use">
-
-## Responsible Use and Limitations
-
-SketchBloom is intended as a creative-assistance tool for illustrators,
-concept artists, and designers. Users should avoid imitating the
-distinctive style of living artists without permission.
-
-Generated SVG outputs should be treated as editable drafts for human
-review and refinement.
-
-</PaperSection>
-
-<PaperSection id="citation" tone="muted">
+<PaperSection id="citation">
 
 ## Citation
 
