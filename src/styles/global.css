@@ -369,8 +369,32 @@ main {
 }
 
 .paper-header__notes {
-  margin-top: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: 0.9rem;
   color: var(--muted-foreground);
+  font-size: clamp(0.88rem, 1.15vw, 1rem);
+  line-height: 1.45;
+  text-align: center;
+}
+
+.paper-header__notes > span {
+  display: block;
+}
+
+.paper-header__notes sup {
+  margin-right: 0.2rem;
+  color: var(--foreground);
+  font-weight: 650;
+}
+.paper-header__author-notes {
+  margin-left: 0.12rem;
+  font-size: 0.68em;
+  font-weight: 650;
+  line-height: 0;
+  vertical-align: super;
 }
 
 .paper-header__links {
